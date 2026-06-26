@@ -17,53 +17,84 @@
     --radius:12px;
   }
   body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; background:var(--surface); color:var(--text); min-height:100vh; padding:0 0 40px; }
-  header { background:var(--white); border-bottom:1px solid var(--border); padding:16px 20px; display:flex; align-items:center; gap:10px; }
-  .logo { width:32px; height:32px; background:var(--brand); border-radius:8px; display:flex; align-items:center; justify-content:center; }
-  .logo svg { width:18px; height:18px; }
-  .title { font-size:16px; font-weight:600; }
-  .sub { font-size:12px; color:var(--muted); margin-top:1px; }
-  main { padding:20px 16px; max-width:480px; margin:0 auto; }
-  .card { background:var(--white); border:1px solid var(--border); border-radius:var(--radius); padding:20px; margin-bottom:16px; }
-  .card-title { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--muted); margin-bottom:14px; }
-  label { display:block; font-size:13px; font-weight:500; color:var(--muted); margin-bottom:6px; }
-  input { width:100%; padding:12px 14px; border:1.5px solid var(--border); border-radius:10px; font-size:15px; color:var(--text); background:var(--white); outline:none; -webkit-appearance:none; margin-bottom:12px; }
-  input:focus { border-color:var(--brand); }
-  #code { font-family:"SF Mono","Fira Code",monospace; font-size:20px; letter-spacing:0.15em; text-align:center; text-transform:uppercase; }
+  header { background:var(--white); border-bottom:1px solid var(--border); padding:14px 20px; display:flex; align-items:center; gap:10px; position:sticky; top:0; z-index:10; }
+  .logo { width:30px; height:30px; background:var(--brand); border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .logo svg { width:17px; height:17px; }
+  .title { font-size:15px; font-weight:600; }
+  .sub { font-size:11px; color:var(--muted); margin-top:1px; }
+  main { padding:16px; max-width:480px; margin:0 auto; }
+  .card { background:var(--white); border:1px solid var(--border); border-radius:var(--radius); padding:20px; margin-bottom:14px; }
+  .card-title { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--muted); margin-bottom:16px; }
+  label { display:block; font-size:13px; font-weight:500; color:var(--text); margin-bottom:6px; }
+  input { width:100%; padding:13px 14px; border:1.5px solid var(--border); border-radius:10px; font-size:15px; color:var(--text); background:var(--white); outline:none; -webkit-appearance:none; margin-bottom:14px; transition:border-color 0.15s; }
+  input:focus { border-color:var(--brand); box-shadow:0 0 0 3px var(--brand-bg); }
+  input#coupon { font-family:"SF Mono","Fira Code",monospace; font-size:20px; letter-spacing:0.12em; text-align:center; text-transform:uppercase; padding:15px; }
   input::placeholder { color:#d1d5db; }
+  .field-group { margin-bottom:4px; }
+  .divider { display:flex; align-items:center; gap:10px; margin:4px 0 16px; }
+  .divider-line { flex:1; height:1px; background:var(--border); }
+  .divider-label { font-size:11px; color:var(--muted); font-weight:500; text-transform:uppercase; letter-spacing:0.05em; white-space:nowrap; }
   .btn { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:14px; border-radius:10px; font-size:15px; font-weight:600; border:none; cursor:pointer; }
   .btn:active { transform:scale(0.98); }
-  .btn-primary { background:var(--brand); color:white; }
-  .btn-primary:disabled { opacity:0.4; cursor:not-allowed; }
-  .btn-success { background:var(--green); color:white; margin-top:12px; }
-  .btn-ghost { background:transparent; color:var(--muted); border:1.5px solid var(--border); margin-top:8px; }
-  .result { border-radius:10px; padding:14px 16px; margin-top:14px; display:none; }
-  .result.show { display:block; }
-  .result-title { font-size:15px; font-weight:700; margin-bottom:4px; }
-  .result-detail { font-size:13px; line-height:1.5; opacity:0.85; }
-  .result.valid { background:var(--green-bg); }
-  .result.invalid { background:var(--red-bg); }
-  .result.warning { background:var(--amber-bg); }
-  .result.valid   .result-title { color:var(--green); }
-  .result.invalid .result-title { color:var(--red); }
-  .result.warning .result-title { color:var(--amber); }
-  .cust-box { background:white; border-radius:8px; padding:10px 12px; margin-top:10px; border:1px solid rgba(0,0,0,0.07); }
-  .cust-name { font-size:18px; font-weight:700; color:var(--text); }
-  .cust-mob  { font-size:14px; color:var(--muted); margin-top:3px; }
-  .done { text-align:center; padding:30px 20px; display:none; }
-  .done.show { display:block; }
-  .done-icon { width:64px; height:64px; background:var(--green-bg); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 16px; }
-  .done-icon svg { width:34px; height:34px; stroke:var(--green); fill:none; }
-  .done h2 { font-size:20px; font-weight:700; margin-bottom:6px; }
-  .done p  { font-size:14px; color:var(--muted); line-height:1.6; }
-  .done .ts { font-size:12px; color:var(--muted); margin-top:10px; }
-  .log-item { display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid var(--border); }
-  .log-item:last-child { border-bottom:none; }
-  .log-dot { width:7px; height:7px; border-radius:50%; background:var(--green); flex-shrink:0; }
-  .log-code { font-family:monospace; font-size:12px; font-weight:600; flex:1; }
-  .log-meta { font-size:11px; color:var(--muted); text-align:right; line-height:1.4; }
-  .spinner { width:18px; height:18px; border:2.5px solid rgba(255,255,255,0.4); border-top-color:white; border-radius:50%; animation:spin 0.7s linear infinite; display:none; }
+  .btn-primary { background:var(--brand); color:white; margin-top:4px; }
+  .btn-primary:disabled { opacity:0.4; cursor:not-allowed; transform:none; }
+  .btn-ghost { background:transparent; color:var(--muted); border:1.5px solid var(--border); font-size:13px; margin-top:10px; }
+  .spinner { width:18px; height:18px; border:2.5px solid rgba(255,255,255,0.4); border-top-color:white; border-radius:50%; animation:spin 0.7s linear infinite; display:none; flex-shrink:0; }
   @keyframes spin { to { transform:rotate(360deg); } }
-  .notice { background:var(--brand-bg); border-radius:8px; padding:10px 12px; font-size:12px; color:var(--brand); margin-bottom:12px; }
+
+  /* result banners */
+  .banner { border-radius:10px; padding:14px 16px; margin-top:16px; display:none; }
+  .banner.show { display:block; }
+  .banner-title { font-size:16px; font-weight:700; margin-bottom:4px; display:flex; align-items:center; gap:6px; }
+  .banner-sub { font-size:13px; line-height:1.5; }
+  .banner.success { background:var(--green-bg); }
+  .banner.success .banner-title { color:var(--green); }
+  .banner.success .banner-sub { color:#065f46; }
+  .banner.error { background:var(--red-bg); }
+  .banner.error .banner-title { color:var(--red); }
+  .banner.error .banner-sub { color:#991b1b; }
+  .banner.warning { background:var(--amber-bg); }
+  .banner.warning .banner-title { color:var(--amber); }
+  .banner.warning .banner-sub { color:#92400e; }
+
+  /* summary box inside banner */
+  .summary { background:white; border-radius:8px; padding:10px 12px; margin-top:10px; border:1px solid rgba(0,0,0,0.07); display:grid; grid-template-columns:1fr 1fr; gap:6px 12px; }
+  .summary-item .s-label { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:1px; }
+  .summary-item .s-val { font-size:13px; font-weight:600; color:var(--text); }
+
+  /* done state */
+  .done-wrap { text-align:center; padding:24px 12px 8px; }
+  .done-icon { width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 14px; }
+  .done-icon.ok { background:var(--green-bg); }
+  .done-icon.fail { background:var(--red-bg); }
+  .done-icon svg { width:30px; height:30px; fill:none; }
+  .done-icon.ok svg { stroke:var(--green); }
+  .done-icon.fail svg { stroke:var(--red); }
+  .done-h { font-size:20px; font-weight:700; margin-bottom:6px; }
+  .done-p { font-size:14px; color:var(--muted); line-height:1.6; }
+  .receipt { background:var(--surface); border-radius:10px; padding:12px 14px; margin-top:14px; text-align:left; border:1px solid var(--border); }
+  .receipt-row { display:flex; justify-content:space-between; align-items:center; padding:5px 0; border-bottom:1px solid var(--border); font-size:13px; }
+  .receipt-row:last-child { border-bottom:none; }
+  .receipt-row .rl { color:var(--muted); }
+  .receipt-row .rv { font-weight:600; color:var(--text); }
+  .receipt-row.highlight .rv { color:var(--green); font-size:15px; }
+
+  /* log */
+  .log-item { display:flex; align-items:flex-start; gap:10px; padding:10px 0; border-bottom:1px solid var(--border); }
+  .log-item:last-child { border-bottom:none; }
+  .log-dot { width:8px; height:8px; border-radius:50%; margin-top:4px; flex-shrink:0; }
+  .log-dot.ok { background:var(--green); }
+  .log-dot.fail { background:var(--red); }
+  .log-info { flex:1; min-width:0; }
+  .log-code { font-family:monospace; font-size:12px; font-weight:600; }
+  .log-name { font-size:12px; color:var(--muted); margin-top:1px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .log-time { font-size:11px; color:var(--muted); flex-shrink:0; }
+  .log-status { font-size:10px; font-weight:600; padding:2px 7px; border-radius:20px; margin-top:3px; display:inline-block; }
+  .log-status.ok { background:var(--green-bg); color:var(--green); }
+  .log-status.fail { background:var(--red-bg); color:var(--red); }
+
+  .notice { background:var(--brand-bg); border-radius:8px; padding:10px 12px; font-size:12px; color:var(--brand); margin-bottom:16px; line-height:1.5; }
+  .change-btn { font-size:12px; color:var(--muted); text-decoration:underline; background:none; border:none; cursor:pointer; padding:0; display:block; margin-top:12px; }
 </style>
 </head>
 <body>
@@ -71,7 +102,8 @@
 <header>
   <div class="logo">
     <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/>
+      <polyline points="20 12 20 22 4 22 4 12"/>
+      <rect x="2" y="7" width="20" height="5"/>
       <line x1="12" y1="22" x2="12" y2="7"/>
       <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
       <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
@@ -85,10 +117,10 @@
 
 <main>
 
-  <!-- Setup card — shown only first time -->
+  <!-- SETUP -->
   <div id="setup-card" class="card" style="display:none">
-    <div class="card-title">Your details — set once</div>
-    <div class="notice">Enter your details once. They'll be saved on this device.</div>
+    <div class="card-title">Your store details — set once</div>
+    <div class="notice">Enter your details once. Saved on this device, never asked again.</div>
     <label>Store name</label>
     <input type="text" id="setup-retailer" placeholder="e.g. FashionZone Surat">
     <label>Your mobile number</label>
@@ -98,74 +130,83 @@
     <button class="btn btn-primary" onclick="saveRetailer()">Save and continue</button>
   </div>
 
-  <!-- Verify card -->
-  <div id="verify-card" class="card" style="display:none">
-    <div class="card-title">Enter coupon code</div>
-    <input type="text" id="code" placeholder="DISC-XXXXX"
-      maxlength="15" autocomplete="off" autocorrect="off" spellcheck="false"
-      oninput="onCodeInput()">
-    <button class="btn btn-primary" id="verify-btn" onclick="verifyCode()" disabled>
+  <!-- MAIN FORM -->
+  <div id="main-card" class="card" style="display:none">
+    <div class="card-title">Customer details and coupon code</div>
+
+    <div class="field-group">
+      <label>Customer name</label>
+      <input type="text" id="cust-name" placeholder="e.g. Priya Sharma" autocomplete="off" oninput="checkForm()">
+    </div>
+
+    <div class="field-group">
+      <label>Customer mobile number</label>
+      <input type="tel" id="cust-mobile" placeholder="9876543210" maxlength="10" inputmode="numeric" autocomplete="off" oninput="checkForm()">
+    </div>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <div class="divider-label">then enter code</div>
+      <div class="divider-line"></div>
+    </div>
+
+    <div class="field-group">
+      <label>Coupon code</label>
+      <input type="text" id="coupon" placeholder="DISC-XXXXX"
+        maxlength="20" autocomplete="off" autocorrect="off" spellcheck="false"
+        oninput="onCouponInput()" onkeydown="if(event.key==='Enter')submit()">
+    </div>
+
+    <button class="btn btn-primary" id="submit-btn" onclick="submit()" disabled>
       <div class="spinner" id="spinner"></div>
-      <span id="verify-label">Verify code</span>
+      <span id="submit-label">Verify and redeem</span>
     </button>
-    <div class="result" id="result-box">
-      <div class="result-title" id="result-title"></div>
-      <div class="result-detail" id="result-detail"></div>
-      <div class="cust-box" id="cust-box" style="display:none">
-        <div class="cust-name" id="cust-name"></div>
-        <div class="cust-mob"  id="cust-mob"></div>
-      </div>
+
+    <div class="banner" id="result-banner">
+      <div class="banner-title" id="banner-title"></div>
+      <div class="banner-sub"   id="banner-sub"></div>
     </div>
-    <button class="btn btn-success" id="confirm-btn" onclick="redeemCode()" style="display:none">
-      <svg width="18" height="18" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
-      Confirm — apply ₹200 discount
-    </button>
-    <button class="btn btn-ghost" onclick="changeRetailer()" style="margin-top:16px;font-size:12px">Change store details</button>
+
+    <button class="change-btn" onclick="changeRetailer()">Change store details</button>
   </div>
 
-  <!-- Done card -->
+  <!-- DONE -->
   <div id="done-card" class="card" style="display:none">
-    <div class="done show" id="done-section">
-      <div class="done-icon">
-        <svg stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+    <div class="done-wrap">
+      <div class="done-icon" id="done-icon">
+        <svg stroke-width="2.5" viewBox="0 0 24 24" id="done-svg"></svg>
       </div>
-      <h2>Redeemed</h2>
-      <p id="done-text"></p>
-      <div class="ts" id="done-ts"></div>
-      <button class="btn btn-ghost" onclick="resetForm()" style="margin-top:20px">Redeem another code</button>
+      <div class="done-h" id="done-h"></div>
+      <div class="done-p" id="done-p"></div>
+      <div class="receipt" id="done-receipt"></div>
+      <button class="btn btn-ghost" onclick="resetForm()">Redeem another code</button>
     </div>
   </div>
 
-  <!-- Log -->
+  <!-- LOG -->
   <div class="card">
     <div class="card-title">Today's redemptions at your outlet</div>
-    <div id="log-list"><div style="font-size:13px;color:var(--muted)">No redemptions yet today.</div></div>
+    <div id="log-list"><div style="font-size:13px;color:var(--muted);padding:4px 0">No redemptions yet today.</div></div>
   </div>
 
 </main>
 
 <script>
-// ── CONFIG ───────────────────────────────────────────────────
-const API_URL = "https://script.google.com/macros/s/AKfycbyPeSZfAaIFs3YhMp2MzD1r9hy3uvW4Oz9vYem-xtwbTMv05qzg88FmJ2emyRFk9mIC/exec";
-// ─────────────────────────────────────────────────────────────
+// ── CONFIG ──────────────────────────────────────────────────
+const API_URL = "https://script.google.com/macros/s/AKfycbzTasTFJR1j5yY38KOIL79Po_l92v53_nn9SxOKQHP-TyTyDiF9cb35nuVohQ81bMEq/exec";
+// ────────────────────────────────────────────────────────────
 
-let currentCode  = "";
-let verifiedData = null;
-let todayLog     = [];
+let todayLog = [];
 
-// ── Retailer setup ───────────────────────────────────────────
+// ── Retailer setup ──────────────────────────────────────────
 function loadRetailer() {
   const name = localStorage.getItem("r_name");
   if (name) {
     const city = localStorage.getItem("r_city") || "";
     document.getElementById("retailer-display").textContent = name + (city ? ", " + city : "");
-    show("verify-card");
-    hide("setup-card");
-    hide("done-card");
+    show("main-card"); hide("setup-card"); hide("done-card");
   } else {
-    show("setup-card");
-    hide("verify-card");
-    hide("done-card");
+    show("setup-card"); hide("main-card"); hide("done-card");
     document.getElementById("retailer-display").textContent = "Setup required";
   }
 }
@@ -180,183 +221,188 @@ function saveRetailer() {
 }
 
 function changeRetailer() {
-  show("setup-card");
-  hide("verify-card");
   document.getElementById("setup-retailer").value = localStorage.getItem("r_name")   || "";
   document.getElementById("setup-mobile").value   = localStorage.getItem("r_mobile") || "";
   document.getElementById("setup-city").value     = localStorage.getItem("r_city")   || "";
+  show("setup-card"); hide("main-card");
 }
 
-// ── Code input ───────────────────────────────────────────────
-function onCodeInput() {
-  let v = document.getElementById("code").value.toUpperCase().replace(/[^A-Z0-9-]/g,"");
-  document.getElementById("code").value = v;
-  currentCode = v;
-  document.getElementById("verify-btn").disabled = v.length < 4;
-  hideResult();
-  hide("confirm-btn");
-  verifiedData = null;
+// ── Form input handling ─────────────────────────────────────
+function onCouponInput() {
+  const el = document.getElementById("coupon");
+  el.value = el.value.toUpperCase().replace(/[^A-Z0-9-]/g, "");
+  checkForm();
+  hideBanner();
 }
 
-// ── VERIFY via JSONP (bypasses CORS) ─────────────────────────
-function verifyCode() {
-  const code = document.getElementById("code").value.trim().toUpperCase();
-  if (!code) return;
+function checkForm() {
+  const name   = document.getElementById("cust-name").value.trim();
+  const mobile = document.getElementById("cust-mobile").value.trim();
+  const coupon = document.getElementById("coupon").value.trim();
+  document.getElementById("submit-btn").disabled = !(name && mobile.length >= 10 && coupon.length >= 3);
+}
+
+// ── SUBMIT — verify + redeem in one step ────────────────────
+function submit() {
+  const custName   = document.getElementById("cust-name").value.trim();
+  const custMobile = document.getElementById("cust-mobile").value.trim();
+  const code       = document.getElementById("coupon").value.trim().toUpperCase();
+
+  if (!custName)              { alert("Enter the customer's name.");               return; }
+  if (custMobile.length < 10) { alert("Enter a valid 10-digit mobile number.");   return; }
+  if (!code)                  { alert("Enter the coupon code.");                   return; }
+
   setLoading(true);
-  hideResult();
-  hide("confirm-btn");
-
-  jsonp(API_URL + "?action=verify&code=" + encodeURIComponent(code), function(data) {
-    setLoading(false);
-    handleVerifyResult(code, data);
-  }, function() {
-    setLoading(false);
-    showResult("invalid", "Connection error", "Could not reach server. Check your internet and try again.");
-  });
-}
-
-function handleVerifyResult(code, data) {
-  currentCode = code;
-  if (data.status === "active") {
-    verifiedData = data;
-    showResult("valid", "✓ Valid — ₹200 discount", "");
-    document.getElementById("cust-box").style.display = "block";
-    document.getElementById("cust-name").textContent  = data.customer_name || "Customer";
-    document.getElementById("cust-mob").textContent   = data.mobile ? "Mobile: " + data.mobile : "";
-    show("confirm-btn");
-  } else if (data.status === "already_redeemed") {
-    showResult("invalid", "Already redeemed",
-      "Used at " + (data.redeemed_where || "another outlet") + (data.redeemed_at ? " on " + data.redeemed_at : "") + ".");
-  } else if (data.status === "expired") {
-    showResult("warning", "Code expired", "This voucher has passed its expiry date.");
-  } else if (data.status === "not_found") {
-    showResult("invalid", "Code not found", "Double-check the code and try again.");
-  } else {
-    showResult("invalid", "Error", data.error || "Something went wrong. Try again.");
-  }
-}
-
-// ── REDEEM via JSONP ─────────────────────────────────────────
-function redeemCode() {
-  if (!verifiedData || !currentCode) return;
-  const btn = document.getElementById("confirm-btn");
-  btn.disabled     = true;
-  btn.textContent  = "Processing…";
+  hideBanner();
 
   const retailer = localStorage.getItem("r_name")   || "";
-  const mobile   = localStorage.getItem("r_mobile") || "";
+  const rMobile  = localStorage.getItem("r_mobile") || "";
   const city     = localStorage.getItem("r_city")   || "";
 
   const url = API_URL
     + "?action=redeem"
-    + "&code="             + encodeURIComponent(currentCode)
-    + "&retailer="         + encodeURIComponent(retailer)
-    + "&retailer_mobile="  + encodeURIComponent(mobile)
-    + "&city="             + encodeURIComponent(city);
+    + "&code="            + encodeURIComponent(code)
+    + "&customer_name="   + encodeURIComponent(custName)
+    + "&customer_mobile=" + encodeURIComponent(custMobile)
+    + "&retailer="        + encodeURIComponent(retailer)
+    + "&retailer_mobile=" + encodeURIComponent(rMobile)
+    + "&city="            + encodeURIComponent(city);
 
-  jsonp(url, function(data) {
-    if (data.status === "redeemed") {
-      showDone(data);
-    } else {
-      btn.disabled    = false;
-      btn.textContent = "Confirm — apply ₹200 discount";
-      showResult("invalid", "Could not redeem", data.error || "Try again.");
+  jsonp(url,
+    function(data) {
+      setLoading(false);
+      handleResult(data, code, custName, custMobile, city);
+    },
+    function() {
+      setLoading(false);
+      showBanner("error", "Connection error", "Could not reach server. Check your internet and try again.");
     }
-  }, function() {
-    btn.disabled    = false;
-    btn.textContent = "Confirm — apply ₹200 discount";
-    showResult("invalid", "Connection error", "Check your internet and try again.");
-  });
+  );
 }
 
-function showDone(data) {
-  hide("verify-card");
+function handleResult(data, code, custName, custMobile, city) {
+  const retailer = localStorage.getItem("r_name") || "";
+  const now      = new Date().toLocaleTimeString("en-IN", { hour:"2-digit", minute:"2-digit" });
+
+  if (data.status === "redeemed") {
+    todayLog.unshift({ code, name: custName, mobile: custMobile, ts: now, ok: true });
+    renderLog();
+    showDone(true, code, custName, custMobile, retailer, city, data.timestamp);
+
+  } else {
+    // Code was invalid — still log the attempt with error
+    let reason = "";
+    if (data.status === "already_redeemed") reason = "Already redeemed" + (data.redeemed_where ? " at " + data.redeemed_where : "");
+    else if (data.status === "expired")     reason = "Code expired";
+    else if (data.status === "not_found")   reason = "Code not found";
+    else                                    reason = data.error || "Invalid code";
+
+    todayLog.unshift({ code, name: custName, mobile: custMobile, ts: now, ok: false, reason });
+    renderLog();
+    showDone(false, code, custName, custMobile, retailer, city, now, reason);
+  }
+}
+
+// ── Done screen ─────────────────────────────────────────────
+function showDone(success, code, custName, custMobile, retailer, city, ts, reason) {
+  hide("main-card");
   show("done-card");
-  document.getElementById("done-text").textContent = "₹200 discount applied for " + (data.customer_name || "customer") + ".";
-  document.getElementById("done-ts").textContent   = data.timestamp ? "Logged at " + data.timestamp : "";
-  todayLog.unshift({ code: currentCode, name: data.customer_name || "", ts: data.timestamp || "" });
-  renderLog();
-  verifiedData = null;
+
+  const icon    = document.getElementById("done-icon");
+  const svg     = document.getElementById("done-svg");
+  const doneH   = document.getElementById("done-h");
+  const doneP   = document.getElementById("done-p");
+  const receipt = document.getElementById("done-receipt");
+
+  if (success) {
+    icon.className = "done-icon ok";
+    svg.innerHTML  = '<path d="M20 6L9 17l-5-5"/>';
+    svg.setAttribute("stroke", "#0e9f6e");
+    doneH.textContent = "Redeemed!";
+    doneP.textContent = "₹200 discount applied. Entry logged in Google Sheet.";
+    receipt.innerHTML = `
+      <div class="receipt-row"><span class="rl">Customer</span><span class="rv">${custName}</span></div>
+      <div class="receipt-row"><span class="rl">Mobile</span><span class="rv">${custMobile}</span></div>
+      <div class="receipt-row"><span class="rl">Code</span><span class="rv" style="font-family:monospace">${code}</span></div>
+      <div class="receipt-row"><span class="rl">Outlet</span><span class="rv">${retailer}${city ? ", " + city : ""}</span></div>
+      <div class="receipt-row"><span class="rl">Time</span><span class="rv">${ts}</span></div>
+      <div class="receipt-row highlight"><span class="rl">Discount</span><span class="rv">₹200 off</span></div>`;
+  } else {
+    icon.className = "done-icon fail";
+    svg.innerHTML  = '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>';
+    svg.setAttribute("stroke", "#e02424");
+    doneH.textContent = "Code invalid";
+    doneP.textContent = reason + ". Attempt has been logged.";
+    receipt.innerHTML = `
+      <div class="receipt-row"><span class="rl">Customer</span><span class="rv">${custName}</span></div>
+      <div class="receipt-row"><span class="rl">Mobile</span><span class="rv">${custMobile}</span></div>
+      <div class="receipt-row"><span class="rl">Code entered</span><span class="rv" style="font-family:monospace;color:#e02424">${code}</span></div>
+      <div class="receipt-row"><span class="rl">Reason</span><span class="rv" style="color:#e02424">${reason}</span></div>
+      <div class="receipt-row"><span class="rl">Time</span><span class="rv">${ts}</span></div>`;
+  }
 }
 
 function resetForm() {
-  document.getElementById("code").value = "";
+  document.getElementById("cust-name").value   = "";
+  document.getElementById("cust-mobile").value = "";
+  document.getElementById("coupon").value       = "";
+  document.getElementById("submit-btn").disabled = true;
   hide("done-card");
-  hide("confirm-btn");
-  show("verify-card");
-  hideResult();
-  verifiedData = null;
-  currentCode  = "";
-  document.getElementById("verify-btn").disabled = true;
+  hideBanner();
+  show("main-card");
+  document.getElementById("cust-name").focus();
 }
 
-// ── JSONP helper ─────────────────────────────────────────────
-// Uses a <script> tag instead of fetch() — completely avoids CORS
+// ── Log ─────────────────────────────────────────────────────
+function renderLog() {
+  const el = document.getElementById("log-list");
+  if (!todayLog.length) {
+    el.innerHTML = '<div style="font-size:13px;color:var(--muted);padding:4px 0">No redemptions yet today.</div>';
+    return;
+  }
+  el.innerHTML = todayLog.map(r => `
+    <div class="log-item">
+      <div class="log-dot ${r.ok ? "ok" : "fail"}"></div>
+      <div class="log-info">
+        <div class="log-code">${r.code}</div>
+        <div class="log-name">${r.name} · ${r.mobile}</div>
+        <span class="log-status ${r.ok ? "ok" : "fail"}">${r.ok ? "Redeemed" : r.reason || "Failed"}</span>
+      </div>
+      <div class="log-time">${r.ts}</div>
+    </div>`).join("");
+}
+
+// ── JSONP ────────────────────────────────────────────────────
 function jsonp(url, onSuccess, onError) {
   const cbName = "cb_" + Date.now();
   const script = document.createElement("script");
-  const timer  = setTimeout(function() {
-    cleanup();
-    if (onError) onError();
-  }, 10000); // 10s timeout
-
-  window[cbName] = function(data) {
-    cleanup();
-    onSuccess(data);
-  };
-
+  const timer  = setTimeout(function() { cleanup(); if (onError) onError(); }, 10000);
+  window[cbName] = function(data) { cleanup(); onSuccess(data); };
   function cleanup() {
-    clearTimeout(timer);
-    delete window[cbName];
+    clearTimeout(timer); delete window[cbName];
     if (script.parentNode) script.parentNode.removeChild(script);
   }
-
   script.onerror = function() { cleanup(); if (onError) onError(); };
   script.src = url + "&callback=" + cbName;
   document.head.appendChild(script);
 }
 
-// ── UI helpers ────────────────────────────────────────────────
-function show(id) { document.getElementById(id).style.display = "block"; }
-function hide(id) { document.getElementById(id).style.display = "none"; }
-
-function showResult(type, title, detail) {
-  const box = document.getElementById("result-box");
-  box.className = "result show " + type;
-  document.getElementById("result-title").textContent = title;
-  document.getElementById("result-detail").textContent = detail;
-  document.getElementById("cust-box").style.display = "none";
+// ── UI helpers ───────────────────────────────────────────────
+function show(id) { const el = document.getElementById(id); if (el) el.style.display = "block"; }
+function hide(id) { const el = document.getElementById(id); if (el) el.style.display = "none"; }
+function showBanner(type, title, sub) {
+  const el = document.getElementById("result-banner");
+  el.className = "banner show " + type;
+  document.getElementById("banner-title").textContent = title;
+  document.getElementById("banner-sub").textContent   = sub;
 }
-function hideResult() {
-  document.getElementById("result-box").className = "result";
-}
+function hideBanner() { document.getElementById("result-banner").className = "banner"; }
 function setLoading(on) {
   document.getElementById("spinner").style.display    = on ? "block" : "none";
-  document.getElementById("verify-label").textContent = on ? "Checking…" : "Verify code";
-  document.getElementById("verify-btn").disabled      = on;
+  document.getElementById("submit-label").textContent = on ? "Checking…" : "Verify and redeem";
+  document.getElementById("submit-btn").disabled      = on;
 }
 
-function renderLog() {
-  const el = document.getElementById("log-list");
-  if (!todayLog.length) {
-    el.innerHTML = '<div style="font-size:13px;color:var(--muted)">No redemptions yet today.</div>';
-    return;
-  }
-  el.innerHTML = todayLog.map(r =>
-    `<div class="log-item">
-      <div class="log-dot"></div>
-      <div class="log-code">${r.code}</div>
-      <div class="log-meta">${r.name}<br><span style="font-size:10px">${r.ts}</span></div>
-    </div>`
-  ).join("");
-}
-
-// ── Enter key on code field ───────────────────────────────────
-document.getElementById("code").addEventListener("keydown", function(e) {
-  if (e.key === "Enter") verifyCode();
-});
-
-// ── Init ──────────────────────────────────────────────────────
 loadRetailer();
 </script>
 </body>
