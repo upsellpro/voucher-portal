@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Redeem Voucher</title>
+<style>
+  /* ---- Reset & base ---- */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --brand:    #1a56db;
+    --brand-bg: #ebf0ff;
+    --green:    #0e9f6e;
+    --green-bg: #def7ec;
+    --red:      #e02424;
+    --red-bg:   #fde8e8;
+    --amber:    #c27803;
+    --amber-bg: #fdf6b2;
+    --text:     #111827;
+    --muted:    #6b7280;
+    --border:   #e5e7eb;
+    --surface:  #f9fafb;
+    --white:    #ffffff;
+    --radius:   12px;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: var(--surface);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0 0 40px;
+  }
+
+  /* ---- Header ---- */
+  header {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  header .logo {
+    width: 32px; height: 32px;
+    background: var(--brand);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  header .logo svg { width: 18px; height: 18px; fill: white; }
+  header .title { font-size: 16px; font-weight: 600; }
+  header .sub   { font-size: 12px; color: var(--muted); margin-top: 1px; }
+
+  /* ---- Layout ---- */
+  main { padding: 20px 16px; max-width: 480px; margin: 0 auto; }
+
+  /* ---- Card ---- */
+  .card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .card-title {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+
+  /* ---- Form elements ---- */
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 15px;
+    color: var(--text);
+    background: var(--white);
+    outline: none;
+    transition: border-color 0.15s;
+    -webkit-appearance: none;
+    margin-bottom: 12px;
+  }
+  input:focus { border-color: var(--brand); }
+  input#code {
+    font-family: "SF Mono", "Fira Code", monospace;
+    font-size: 18px;
+    letter-spacing: 0.12em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  input::placeholder { color: #d1d5db; }
+
+  /* ---- Buttons ---- */
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.1s;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary {
+    background: var(--brand);
+    color: white;
+  }
+  .btn-primary:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .btn-success {
+    background: var(--green);
+    color: white;
+    margin-top: 14px;
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--muted);
+    border: 1.5px solid var(--border);
+    margin-top: 8px;
+  }
+
+  /* ---- Result banners ---- */
+  .result {
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-top: 14px;
+    display: none;
+  }
+  .result.show { display: block; }
+  .result-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .result-detail { font-size: 13px; opacity: 0.85; line-height: 1.5; }
+  .result-detail span { display: block; margin-top: 2px; }
+
+  .result.valid   { background: var(--green-bg);  }
+  .result.invalid { background: var(--red-bg);    }
+  .result.warning { background: var(--amber-bg);  }
+
+  .result.valid   .result-title { color: var(--green);  }
+  .result.invalid .result-title { color: var(--red);    }
+  .result.warning .result-title { color: var(--amber);  }
+
+  /* ---- Customer info card (shown on valid) ---- */
+  .cust-box {
+    background: white;
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-top: 10px;
+    border: 1px solid rgba(0,0,0,0.07);
+  }
+  .cust-box .cust-name { font-size: 17px; font-weight: 700; color: var(--text); }
+  .cust-box .cust-mob  { font-size: 14px; color: var(--muted); margin-top: 2px; }
+
+  /* ---- Done state ---- */
+  .done {
+    text-align: center;
+    padding: 30px 20px;
+    display: none;
+  }
+  .done.show { display: block; }
+  .done-icon {
+    width: 64px; height: 64px;
+    background: var(--green-bg);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px;
+  }
+  .done-icon svg { width: 34px; height: 34px; stroke: var(--green); }
+  .done h2 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+  .done p  { font-size: 14px; color: var(--muted); line-height: 1.6; }
+  .done .ts { font-size: 12px; color: var(--muted); margin-top: 12px; }
+
+  /* ---- Log section ---- */
+  .log-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .log-item:last-child { border-bottom: none; }
+  .log-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    flex-shrink: 0;
+  }
+  .log-code { font-family: monospace; font-size: 13px; font-weight: 600; flex: 1; }
+  .log-meta { font-size: 12px; color: var(--muted); text-align: right; }
+
+  /* ---- Spinner ---- */
+  .spinner {
+    width: 20px; height: 20px;
+    border: 2.5px solid rgba(255,255,255,0.4);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: none;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <svg viewBox="0 0 24 24"><path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z" fill="none" stroke="white" stroke-width="2"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+  </div>
+  <div>
+    <div class="title">Redeem voucher</div>
+    <div class="sub" id="retailer-name-display">Loading retailer info…</div>
+  </div>
+</header>
+
+<main>
+
+  <!-- Step 1: Retailer sets their name (one-time, saved locally) -->
+  <div id="setup-card" class="card" style="display:none">
+    <div class="card-title">Your details — set once</div>
+    <label>Your name / store name</label>
+    <input type="text" id="setup-retailer" placeholder="e.g. FashionZone Surat">
+    <label>Your mobile number</label>
+    <input type="tel" id="setup-mobile" placeholder="9876543210" maxlength="10">
+    <label>City</label>
+    <input type="text" id="setup-city" placeholder="Surat">
+    <button class="btn btn-primary" onclick="saveRetailer()">Save and continue</button>
+  </div>
+
+  <!-- Step 2: Verify form -->
+  <div id="verify-card" class="card" style="display:none">
+    <div class="card-title">Enter coupon code</div>
+    <label>Customer's coupon code</label>
+    <input type="text" id="code" placeholder="DISC-XXXXX" maxlength="15"
+      oninput="onCodeInput()" autocomplete="off" autocorrect="off" spellcheck="false">
+
+    <button class="btn btn-primary" id="verify-btn" onclick="verifyCode()" disabled>
+      <div class="spinner" id="verify-spinner"></div>
+      <span id="verify-label">Verify code</span>
+    </button>
+
+    <!-- Result area -->
+    <div class="result" id="result-box">
+      <div class="result-title" id="result-title"></div>
+      <div class="result-detail" id="result-detail"></div>
+      <div class="cust-box" id="cust-box" style="display:none">
+        <div class="cust-name" id="cust-name"></div>
+        <div class="cust-mob"  id="cust-mob"></div>
+      </div>
+    </div>
+
+    <button class="btn btn-success" id="confirm-btn" onclick="redeemCode()" style="display:none">
+      <svg width="18" height="18" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+      Confirm — apply ₹200 discount
+    </button>
+  </div>
+
+  <!-- Step 3: Done state -->
+  <div id="done-card" class="card">
+    <div class="done" id="done-section">
+      <div class="done-icon">
+        <svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+      </div>
+      <h2>Redeemed</h2>
+      <p id="done-text">₹200 discount applied and logged.</p>
+      <div class="ts" id="done-ts"></div>
+      <button class="btn btn-ghost" onclick="resetForm()" style="margin-top:20px">Redeem another code</button>
+    </div>
+  </div>
+
+  <!-- Today's log -->
+  <div class="card" id="log-card">
+    <div class="card-title">Today's redemptions</div>
+    <div id="log-list">
+      <div style="font-size:13px;color:var(--muted);padding:8px 0">No redemptions yet today.</div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+// ---- CONFIG: replace with your deployed Apps Script URL ----
+const API_URL = "https://script.google.com/macros/s/AKfycbz7284eOFCsR2mUTu4gOHvO6sLs8SAsIiSlxU6q44BEYkN5UHXdjItzFpJd5sx9_WGf/exec";
+// After deploying in Apps Script: Deploy → Manage Deployments → copy the URL
+// ------------------------------------------------------------
+
+let currentCode    = "";
+let verifiedData   = null;
+let todayLog       = [];
+
+// ---- Retailer identity (stored in localStorage) ----
+function loadRetailer() {
+  const r = localStorage.getItem("retailer_name");
+  const m = localStorage.getItem("retailer_mobile");
+  const c = localStorage.getItem("retailer_city");
+
+  if (r) {
+    document.getElementById("retailer-name-display").textContent = r + (c ? ", " + c : "");
+    document.getElementById("setup-card").style.display  = "none";
+    document.getElementById("verify-card").style.display = "block";
+    document.getElementById("done-card").style.display   = "none";
+    document.getElementById("done-section").classList.remove("show");
+  } else {
+    document.getElementById("setup-card").style.display  = "block";
+    document.getElementById("verify-card").style.display = "none";
+    document.getElementById("done-card").style.display   = "none";
+  }
+}
+
+function saveRetailer() {
+  const name   = document.getElementById("setup-retailer").value.trim();
+  const mobile = document.getElementById("setup-mobile").value.trim();
+  const city   = document.getElementById("setup-city").value.trim();
+  if (!name) { alert("Enter your store name to continue."); return; }
+  localStorage.setItem("retailer_name",   name);
+  localStorage.setItem("retailer_mobile", mobile);
+  localStorage.setItem("retailer_city",   city);
+  loadRetailer();
+}
+
+// ---- Code input handling ----
+function onCodeInput() {
+  const val = document.getElementById("code").value.toUpperCase().replace(/[^A-Z0-9-]/g, "");
+  document.getElementById("code").value = val;
+  document.getElementById("verify-btn").disabled = val.length < 5;
+  hideResult();
+  document.getElementById("confirm-btn").style.display = "none";
+  verifiedData = null;
+  currentCode  = val;
+}
+
+// ---- Verify ----
+async function verifyCode() {
+  const code = document.getElementById("code").value.trim().toUpperCase();
+  if (!code) return;
+  setVerifyLoading(true);
+  hideResult();
+  document.getElementById("confirm-btn").style.display = "none";
+
+  try {
+    const res  = await fetch(`${API_URL}?action=verify&code=${encodeURIComponent(code)}`);
+    const data = await res.json();
+    setVerifyLoading(false);
+    handleVerifyResult(code, data);
+  } catch (e) {
+    setVerifyLoading(false);
+    showResult("invalid", "Connection error", "Couldn't reach the server. Check your internet and try again.");
+  }
+}
+
+function handleVerifyResult(code, data) {
+  currentCode = code;
+  if (data.status === "active") {
+    verifiedData = data;
+    showResult("valid", "✓ Valid — ₹200 discount", "");
+    document.getElementById("cust-box").style.display = "block";
+    document.getElementById("cust-name").textContent  = data.customer_name || "Customer";
+    document.getElementById("cust-mob").textContent   = data.mobile ? "Mobile: " + data.mobile : "";
+    document.getElementById("confirm-btn").style.display = "block";
+  } else if (data.status === "already_redeemed") {
+    showResult("invalid", "Already redeemed",
+      `This code was used at ${data.redeemed_where || "another outlet"} on ${data.redeemed_at || "a previous date"}.`);
+  } else if (data.status === "expired") {
+    showResult("warning", "Code expired", "This voucher has passed its expiry date.");
+  } else if (data.status === "not_found") {
+    showResult("invalid", "Code not found", "Double-check the code and try again.");
+  } else {
+    showResult("invalid", "Something went wrong", data.error || "Try again.");
+  }
+}
+
+// ---- Redeem ----
+async function redeemCode() {
+  if (!verifiedData || !currentCode) return;
+  document.getElementById("confirm-btn").disabled = true;
+  document.getElementById("confirm-btn").textContent = "Processing…";
+
+  const retailer        = localStorage.getItem("retailer_name")   || "";
+  const retailer_mobile = localStorage.getItem("retailer_mobile") || "";
+  const city            = localStorage.getItem("retailer_city")   || "";
+
+  try {
+    const url  = `${API_URL}?action=redeem`
+               + `&code=${encodeURIComponent(currentCode)}`
+               + `&retailer=${encodeURIComponent(retailer)}`
+               + `&retailer_mobile=${encodeURIComponent(retailer_mobile)}`
+               + `&city=${encodeURIComponent(city)}`;
+    const res  = await fetch(url);
+    const data = await res.json();
+
+    if (data.status === "redeemed") {
+      showDone(data);
+    } else {
+      document.getElementById("confirm-btn").disabled    = false;
+      document.getElementById("confirm-btn").textContent = "Confirm — apply ₹200 discount";
+      showResult("invalid", "Could not redeem", data.error || "Try again.");
+    }
+  } catch (e) {
+    document.getElementById("confirm-btn").disabled    = false;
+    document.getElementById("confirm-btn").textContent = "Confirm — apply ₹200 discount";
+    showResult("invalid", "Connection error", "Check your internet and try again.");
+  }
+}
+
+function showDone(data) {
+  document.getElementById("verify-card").style.display = "none";
+  document.getElementById("done-card").style.display   = "block";
+  document.getElementById("done-section").classList.add("show");
+  document.getElementById("done-text").textContent =
+    `₹200 discount applied for ${data.customer_name || "customer"}.`;
+  document.getElementById("done-ts").textContent = data.timestamp || "";
+
+  // Add to today's log
+  todayLog.unshift({ code: currentCode, name: data.customer_name, ts: data.timestamp });
+  renderLog();
+  verifiedData = null;
+}
+
+function resetForm() {
+  document.getElementById("code").value             = "";
+  document.getElementById("verify-btn").disabled    = true;
+  document.getElementById("confirm-btn").style.display = "none";
+  document.getElementById("done-card").style.display   = "none";
+  document.getElementById("done-section").classList.remove("show");
+  document.getElementById("verify-card").style.display = "block";
+  hideResult();
+  verifiedData = null;
+  currentCode  = "";
+}
+
+// ---- UI helpers ----
+function showResult(type, title, detail) {
+  const box = document.getElementById("result-box");
+  box.className = "result show " + type;
+  document.getElementById("result-title").textContent  = title;
+  document.getElementById("result-detail").innerHTML   = detail;
+  document.getElementById("cust-box").style.display    = "none";
+}
+function hideResult() {
+  document.getElementById("result-box").className = "result";
+}
+function setVerifyLoading(on) {
+  document.getElementById("verify-spinner").style.display = on ? "block" : "none";
+  document.getElementById("verify-label").textContent     = on ? "Checking…" : "Verify code";
+  document.getElementById("verify-btn").disabled          = on;
+}
+
+// ---- Log ----
+function renderLog() {
+  const el = document.getElementById("log-list");
+  if (!todayLog.length) {
+    el.innerHTML = '<div style="font-size:13px;color:var(--muted);padding:8px 0">No redemptions yet today.</div>';
+    return;
+  }
+  el.innerHTML = todayLog.map(r => `
+    <div class="log-item">
+      <div class="log-dot"></div>
+      <div class="log-code">${r.code}</div>
+      <div class="log-meta">${r.name || ""}<br>${r.ts || ""}</div>
+    </div>
+  `).join("");
+}
+
+// ---- Init ----
+loadRetailer();
+renderLog();
+
+// Allow pressing Enter on code field
+document.getElementById("code")?.addEventListener("keydown", e => {
+  if (e.key === "Enter") verifyCode();
+});
+</script>
+
+</body>
+</html>
